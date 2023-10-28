@@ -20,11 +20,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> usersAll() {
-        List<User> usersAll = new ArrayList<>();
-        for (User user : users.values()) {
-            usersAll.add(user);
-        }
-        return usersAll;
+        return new ArrayList<>(users.values());
     }
 
     @PostMapping(value = "/users")

@@ -22,11 +22,7 @@ public class FilmController {
 
     @GetMapping("/films")
     public List<Film> filmsAll() {
-        List<Film> filmsAll = new ArrayList<>();
-        for (Film film : films.values()) {
-            filmsAll.add(film);
-        }
-        return filmsAll;
+        return new ArrayList<>(films.values());
     }
 
     @PostMapping(value = "/films")
