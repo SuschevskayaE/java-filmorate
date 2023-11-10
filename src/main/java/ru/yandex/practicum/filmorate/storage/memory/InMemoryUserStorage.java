@@ -19,7 +19,7 @@ public class InMemoryUserStorage extends InMemoryBaseStorage<User> implements Us
 
     @Override
     public User create(User data) {
-        if(data.getIdFriends() == null){
+        if (data.getIdFriends() == null) {
             data.setIdFriends(new HashSet<>());
         }
         return super.create(data);
@@ -27,7 +27,7 @@ public class InMemoryUserStorage extends InMemoryBaseStorage<User> implements Us
 
     @Override
     public User update(User data) {
-        if(data.getIdFriends() == null){
+        if (data.getIdFriends() == null) {
             data.setIdFriends(new HashSet<>());
         }
         return super.update(data);

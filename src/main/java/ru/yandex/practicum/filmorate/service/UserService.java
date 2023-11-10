@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService extends AbstractService<User> {
@@ -88,9 +87,9 @@ public class UserService extends AbstractService<User> {
         List<User> users = userStorage.getAll();
         List<User> usersToFriend = new ArrayList<>();
 
-        for (Long c : community){
-            for (User u : users){
-                if(u.getId().equals(c)){
+        for (Long c : community) {
+            for (User u : users) {
+                if (u.getId().equals(c)) {
                     usersToFriend.add(u);
                 }
             }
