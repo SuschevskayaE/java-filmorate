@@ -1,6 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.Email;
@@ -11,10 +14,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@NoArgsConstructor
 @Slf4j
-public class User {
-
-    private Integer id;
+public class User extends BaseUnit {
 
     @Email
     @NotBlank
@@ -28,5 +32,5 @@ public class User {
     @Past
     private LocalDate birthday;
 
-    private Set<Integer> idFriends;
+    private Set<Long> idFriends;
 }

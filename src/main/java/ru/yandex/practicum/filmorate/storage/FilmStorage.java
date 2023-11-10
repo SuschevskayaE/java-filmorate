@@ -4,11 +4,15 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
 
-public interface FilmStorage {
+public interface FilmStorage extends AbstractStorage<Film> {
 
-    List<Film> filmsAll();
+    Film create(Film data);
 
-    Film createFilm(Film film);
+    Film update(Film data);
 
-    Film updateFilm(Film film);
+    List<Film> getAll();
+
+    Film get(long id);
+
+    Film validate(Film data);
 }
