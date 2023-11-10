@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements FilmStorage {
 
-    private final static LocalDate START_RELEASE_DATE = LocalDate.of(1895, Month.DECEMBER, 28);
+    private static final LocalDate START_RELEASE_DATE = LocalDate.of(1895, Month.DECEMBER, 28);
 
     @Override
     public List<Film> getAll() {
