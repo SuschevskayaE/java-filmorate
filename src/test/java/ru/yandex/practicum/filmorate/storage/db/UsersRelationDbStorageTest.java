@@ -54,8 +54,8 @@ public class UsersRelationDbStorageTest {
                 "AND  secondary_user_id = ?";
 
         List<Long> friends = jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("id")
-                , oncUserId, twoUserId);
+                        rs.getLong("id"),
+                oncUserId, twoUserId);
         assertThat(friends)
                 .isNotNull()
                 .hasSize(1);
@@ -73,8 +73,8 @@ public class UsersRelationDbStorageTest {
                 "AND  secondary_user_id = ?";
 
         List<Long> friends = jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("id")
-                , oncUserId, twoUserId);
+                        rs.getLong("id"),
+                oncUserId, twoUserId);
         assertThat(friends)
                 .isNullOrEmpty();
     }

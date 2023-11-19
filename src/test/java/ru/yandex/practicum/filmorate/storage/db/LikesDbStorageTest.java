@@ -61,8 +61,8 @@ public class LikesDbStorageTest {
                 "AND  user_id = ?";
 
         List<Long> like = jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("id")
-                , filmId, userId);
+                        rs.getLong("id"),
+                filmId, userId);
         assertThat(like)
                 .isNotNull()
                 .hasSize(1);
@@ -81,8 +81,8 @@ public class LikesDbStorageTest {
                 "AND  user_id = ?";
 
         List<Long> like = jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("id")
-                , filmId, userId);
+                        rs.getLong("id"),
+                filmId, userId);
         assertThat(like)
                 .isNullOrEmpty();
     }
