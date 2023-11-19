@@ -63,8 +63,8 @@ public class LikesDbStorage implements LikesStorage {
                 "LIMIT ?";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("film_id")
-                , count);
+                        rs.getLong("film_id"),
+                count);
     }
 
 }
