@@ -84,13 +84,13 @@ public class FilmDbStorage implements FilmStorage {
                 "mpa_id = ? " +
                 "WHERE id = ?";
 
-        jdbcTemplate.update(sqlQuery
-                , data.getName()
-                , data.getDescription()
-                , data.getReleaseDate()
-                , data.getDuration()
-                , data.getMpa().getId()
-                , id);
+        jdbcTemplate.update(sqlQuery,
+                data.getName(),
+                data.getDescription(),
+                data.getReleaseDate(),
+                data.getDuration(),
+                data.getMpa().getId(),
+                id);
         log.debug("Элемент обновлен:" + data);
         return data;
     }
