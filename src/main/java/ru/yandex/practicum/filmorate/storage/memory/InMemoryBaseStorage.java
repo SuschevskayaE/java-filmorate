@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 @Component
 @Slf4j
 public abstract class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<T> {

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -30,5 +30,7 @@ public class Film extends BaseUnit {
     @Positive
     private int duration;
 
-    private Set<Long> likes;
+    private MpaRating mpa;
+
+    List<Genre> genres;
 }
