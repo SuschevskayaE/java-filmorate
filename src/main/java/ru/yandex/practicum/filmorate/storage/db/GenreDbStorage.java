@@ -47,9 +47,9 @@ public class GenreDbStorage implements GenreStorage {
         String sqlQuery = "MERGE INTO film_genres(genre_id, film_id) " +
                 "VALUES(?, ?)";
 
-        jdbcTemplate.update(sqlQuery
-                , genreId
-                , filmId);
+        jdbcTemplate.update(sqlQuery,
+                genreId,
+                filmId);
         log.debug("Добавлен новый элемент'");
     }
 
