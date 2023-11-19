@@ -76,12 +76,12 @@ public class UserDbStorage implements UserStorage {
                 "birthday = ? " +
                 "WHERE id = ?";
 
-        jdbcTemplate.update(sqlQuery
-                , data.getEmail()
-                , data.getLogin()
-                , data.getName()
-                , data.getBirthday()
-                , id);
+        jdbcTemplate.update(sqlQuery,
+                data.getEmail(),
+                data.getLogin(),
+                data.getName(),
+                data.getBirthday(),
+                id);
         log.debug("Элемент обновлен:" + data);
         return data;
     }

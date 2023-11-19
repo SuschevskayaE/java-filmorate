@@ -70,8 +70,8 @@ public class UsersRelationDbStorage implements UsersRelationStorage {
                 "WHERE ur.PRIMARY_USER_ID = ?";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("friend")
-                , userId, userId);
+                        rs.getLong("friend"),
+                userId, userId);
     }
 
     @Override

@@ -56,8 +56,8 @@ public class GenreDbStorage implements GenreStorage {
     public void deleteAllGenreByFilm(long filmId) {
         String sqlQuery = "DELETE FROM film_genres WHERE film_id = ?";
 
-        int count = jdbcTemplate.update(sqlQuery
-                , filmId);
+        int count = jdbcTemplate.update(sqlQuery,
+                filmId);
         log.debug(String.format("Удалены %s элементов'", count));
     }
 
