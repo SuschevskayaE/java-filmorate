@@ -27,8 +27,8 @@ public class FilmService extends AbstractService<Film> {
     @Autowired
     public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
                        LikesStorage likesStorage,
-                       MpaRatingStorage mpaRatingStorage
-            , GenreStorage genreStorage) {
+                       MpaRatingStorage mpaRatingStorage,
+                       GenreStorage genreStorage) {
         this.storage = filmStorage;
         this.likesStorage = likesStorage;
         this.mpaRatingStorage = mpaRatingStorage;
