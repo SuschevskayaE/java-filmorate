@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.HashSet;
 import java.util.List;
 
+@Deprecated
 @Component
 @Slf4j
 public class InMemoryUserStorage extends InMemoryBaseStorage<User> implements UserStorage {
@@ -19,17 +19,11 @@ public class InMemoryUserStorage extends InMemoryBaseStorage<User> implements Us
 
     @Override
     public User create(User data) {
-        if (data.getIdFriends() == null) {
-            data.setIdFriends(new HashSet<>());
-        }
         return super.create(data);
     }
 
     @Override
     public User update(User data) {
-        if (data.getIdFriends() == null) {
-            data.setIdFriends(new HashSet<>());
-        }
         return super.update(data);
     }
 

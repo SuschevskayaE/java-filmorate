@@ -1,95 +1,61 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.UsersRelationStorage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class UserService extends AbstractService<User> {
-    private final UserStorage userStorage;
 
-    public User addToFriend(Integer userId, Integer friendId) {
-        User user = userStorage.get(userId);
-        User friend = userStorage.get(friendId);
+    private final UsersRelationStorage usersRelationStorage;
 
-        Set<Long> friends = user.getIdFriends();
-        friends.add(friend.getId());
-        user.setIdFriends(friends);
+    @Autowired
+    public UserService(@Qualifier("userDbStorage") UserStorage storage, UsersRelationStorage usersRelationStorage) {
+        this.storage = storage;
+        this.usersRelationStorage = usersRelationStorage;
 
-        Set<Long> toFriends = friend.getIdFriends();
-        toFriends.add(user.getId());
-        friend.setIdFriends(toFriends);
-
-        return user;
     }
 
-    public User removeFromFriend(Integer userId, Integer friendId) {
-        User user = userStorage.get(userId);
-        User friend = userStorage.get(friendId);
-
-        Set<Long> friends = user.getIdFriends();
-        friends.remove(friend.getId());
-        user.setIdFriends(friends);
-
-        Set<Long> toFriends = friend.getIdFriends();
-        toFriends.remove(user.getId());
-        friend.setIdFriends(toFriends);
-
-        return user;
+    public User addToFriend(long userId, long friendId) {
+        storage.get(userId);
+        storage.get(friendId);
+        usersRelationStorage.addFriend(userId, friendId);
+        return storage.get(userId);
     }
 
-    public List<User> getFriends(Integer userId) {
-        User user = userStorage.get(userId);
-        Set<Long> friends = user.getIdFriends();
-
-        List<User> users = userStorage.getAll();
-
-        List<User> usersToFriend = new ArrayList<>();
-
-        for (User u : users) {
-            for (Long i : friends) {
-                if (u.getId().equals(i)) {
-                    usersToFriend.add(u);
-                }
-            }
-        }
-        return usersToFriend;
+    public User removeFromFriend(long userId, long friendId) {
+        usersRelationStorage.removeFriend(userId, friendId);
+        return storage.get(userId);
     }
 
-    public List<User> getCommonFriends(Integer userId, Integer friendId) {
-        User user = userStorage.get(userId);
-        User friend = userStorage.get(friendId);
+    public List<User> getFriends(long userId) {
+        List<Long> friendIds = usersRelationStorage.getFriends(userId);
+        List<User> usersAll = storage.getAll();
+        return enrichmentDataById(friendIds, usersAll);
+    }
 
-        Set<Long> friends = user.getIdFriends();
-        Set<Long> toFriends = friend.getIdFriends();
+    public List<User> getCommonFriends(long userId, long friendId) {
+        List<Long> friendIds = usersRelationStorage.getCommonFriends(userId, friendId);
+        List<User> usersAll = storage.getAll();
+        return enrichmentDataById(friendIds, usersAll);
+    }
 
-        Set<Long> community = new HashSet<>();
-
-        for (Long i : friends) {
-            for (Long h : toFriends) {
-                if (i.equals(h)) {
-                    community.add(i);
-                }
-            }
+    private List<User> enrichmentDataById(List<Long> ids, List<User> data) {
+        List<User> users = new ArrayList<>();
+        for (Long id : ids) {
+            User user = data.stream().filter(u -> u.getId().equals(id)).findFirst()
+                    .orElseThrow(() -> new DataNotFoundException(String.format("Элемент c id %s не найден", id)));
+            users.add(user);
         }
-
-        List<User> users = userStorage.getAll();
-        List<User> usersToFriend = new ArrayList<>();
-
-        for (Long c : community) {
-            for (User u : users) {
-                if (u.getId().equals(c)) {
-                    usersToFriend.add(u);
-                }
-            }
-        }
-        return usersToFriend;
+        return users;
     }
 }

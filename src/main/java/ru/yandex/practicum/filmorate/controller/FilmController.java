@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,28 +13,27 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/films")
-public class FilmController extends BaseController<Film> {
-    private final FilmStorage filmStorage;
+public class FilmController {
     private final FilmService filmService;
 
     @GetMapping
     public List<Film> filmsAll() {
-        return filmStorage.getAll();
+        return filmService.getAll();
     }
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        return filmStorage.create(film);
+        return filmService.create(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        return filmStorage.update(film);
+        return filmService.update(film);
     }
 
     @GetMapping("/{filmId}")
     public Film getFilmById(@PathVariable int filmId) {
-        return filmStorage.get(filmId);
+        return filmService.get(filmId);
     }
 
     @PutMapping("/{id}/like/{userId}")

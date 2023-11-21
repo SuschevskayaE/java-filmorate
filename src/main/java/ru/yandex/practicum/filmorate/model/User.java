@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -31,6 +30,4 @@ public class User extends BaseUnit {
 
     @Past
     private LocalDate birthday;
-
-    private Set<Long> idFriends;
 }

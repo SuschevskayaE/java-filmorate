@@ -8,9 +8,9 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.HashSet;
 import java.util.List;
 
+@Deprecated
 @Component
 @Slf4j
 public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements FilmStorage {
@@ -24,17 +24,11 @@ public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements Fi
 
     @Override
     public Film create(Film data) {
-        if (data.getLikes() == null) {
-            data.setLikes(new HashSet<>());
-        }
         return super.create(data);
     }
 
     @Override
     public Film update(Film data) {
-        if (data.getLikes() == null) {
-            data.setLikes(new HashSet<>());
-        }
         return super.update(data);
     }
 
