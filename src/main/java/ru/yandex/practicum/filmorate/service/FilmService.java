@@ -38,19 +38,7 @@ public class FilmService extends AbstractService<Film> {
     @Override
     public List<Film> getAll() {
         List<Film> films = storage.getAll();
-        List<MpaRating> mpa = mpaRatingStorage.getAll();
-        List<Film> fullFilms = new ArrayList<>();
-
-        for (Film film : films) {
-            long mpaId = film.getMpa().getId();
-
-            MpaRating mpaRating = mpa.stream().filter(m -> m.getId().equals(mpaId)).findFirst()
-                    .orElseThrow(() -> new DataNotFoundException(String.format("Элемент c id %s не найден", mpaId)));
-            film.setMpa(mpaRating);
-            film.setGenres(genreStorage.getGenreIdsForFilmId(film.getId()));
-            fullFilms.add(film);
-        }
-        return fullFilms;
+        return enrichingFilms(films);
     }
 
     @Override
@@ -86,17 +74,8 @@ public class FilmService extends AbstractService<Film> {
     }
 
     public List<Film> getPopularFilms(Integer count) {
-        List<Long> filmIds = likesStorage.getPopularFilms(count);
-        List<Film> filmsAll = getAll();
-
-        List<Film> films = new ArrayList<>();
-
-        for (Long id : filmIds) {
-            Film film = filmsAll.stream().filter(f -> f.getId().equals(id)).findFirst()
-                    .orElseThrow(() -> new DataNotFoundException(String.format("Элемент c id %s не найден", id)));
-            films.add(film);
-        }
-        return films;
+        List<Film> films = likesStorage.getPopularFilms(count);
+        return enrichingFilms(films);
 
     }
 
@@ -108,5 +87,21 @@ public class FilmService extends AbstractService<Film> {
                 genreStorage.createGenreByFilm(genre.getId(), data.getId());
             }
         }
+    }
+
+    private List<Film> enrichingFilms(List<Film> films) {
+        List<MpaRating> mpa = mpaRatingStorage.getAll();
+        List<Film> fullFilms = new ArrayList<>();
+
+        for (Film film : films) {
+            long mpaId = film.getMpa().getId();
+
+            MpaRating mpaRating = mpa.stream().filter(m -> m.getId().equals(mpaId)).findFirst()
+                    .orElseThrow(() -> new DataNotFoundException(String.format("Элемент c id %s не найден", mpaId)));
+            film.setMpa(mpaRating);
+            film.setGenres(genreStorage.getGenreIdsForFilmId(film.getId()));
+            fullFilms.add(film);
+        }
+        return fullFilms;
     }
 }

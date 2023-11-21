@@ -8,6 +8,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.DuplicateException;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.storage.LikesStorage;
 
 import java.sql.PreparedStatement;
@@ -52,18 +54,29 @@ public class LikesDbStorage implements LikesStorage {
     }
 
     @Override
-    public List<Long> getPopularFilms(int count) {
+    public List<Film> getPopularFilms(int count) {
 
-        String sqlQuery = "SELECT f.ID AS FILM_ID ," +
+        String sqlQuery = "SELECT f.ID AS ID ," +
+                "f.name AS name ," +
+                "f.description AS description ," +
+                "f.release_date AS release_date ," +
+                "f.duration AS duration ," +
+                "f.mpa_id AS mpa_id ," +
                 "COUNT( DISTINCT l.USER_ID) AS popular " +
                 "FROM FILMS f " +
                 "left JOIN LIKES l ON l.FILM_ID = f.ID " +
-                "GROUP BY FILM_ID " +
+                "GROUP BY ID " +
                 "ORDER BY popular DESC " +
                 "LIMIT ?";
 
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
-                        rs.getLong("film_id"),
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> Film.builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .releaseDate(rs.getTimestamp("release_date").toLocalDateTime().toLocalDate())
+                        .duration(rs.getInt("duration"))
+                        .mpa(MpaRating.builder().id(rs.getLong("mpa_id")).build())
+                        .build(),
                 count);
     }
 

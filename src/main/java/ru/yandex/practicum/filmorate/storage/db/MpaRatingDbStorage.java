@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
@@ -24,12 +25,11 @@ public class MpaRatingDbStorage implements MpaRatingStorage {
 
     @Override
     public MpaRating get(long id) {
-        List<MpaRating> mpaRatings = jdbcTemplate.query("select * from mpa_ratings where id = ?", MpaRatingDbStorage::createMpaRating, id);
-        if (mpaRatings.size() != 1) {
+        try {
+            return jdbcTemplate.queryForObject("select * from mpa_ratings where id = ?", MpaRatingDbStorage::createMpaRating, id);
+        } catch (EmptyResultDataAccessException e) {
             throw new DataNotFoundException(String.format("В таблице нет одной записи с id = %s", id));
         }
-        return mpaRatings.get(0);
-
     }
 
     @Override

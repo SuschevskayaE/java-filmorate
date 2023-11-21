@@ -51,9 +51,6 @@ public class UsersRelationDbStorage implements UsersRelationStorage {
             if (newNumberRows > 1) {
                 throw new DuplicateException(String.format("В таблице удалены больше одной записи с userId = %s и friendId = %s ", friendId, userId));
             }
-//            if (newNumberRows == 0) {
-//                throw new DataNotFoundException(String.format("В таблице нет одной записи с userId = %s и friendId = %s ", friendId, userId));
-//            }
         }
         log.debug("Удален друг");
     }
@@ -88,7 +85,6 @@ public class UsersRelationDbStorage implements UsersRelationStorage {
                 }
             }
         }
-
         return community;
     }
 

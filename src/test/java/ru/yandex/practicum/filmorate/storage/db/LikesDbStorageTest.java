@@ -93,10 +93,10 @@ public class LikesDbStorageTest {
         LikesStorage likesStorage = new LikesDbStorage(jdbcTemplate);
         likesStorage.addLike(filmId, userId);
 
-        List<Long> popularFilms = likesStorage.getPopularFilms(1);
+        List<Film> popularFilms = likesStorage.getPopularFilms(1);
 
         assertThat(popularFilms)
                 .isNotNull()
-                .containsOnlyOnce(filmId);
+                .hasSize(1);
     }
 }

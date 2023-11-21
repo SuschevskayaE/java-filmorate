@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -30,11 +31,11 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User get(long id) {
-        List<User> users = jdbcTemplate.query("select * from users where id = ?", UserDbStorage::createUser, id);
-        if (users.size() != 1) {
+        try {
+            return jdbcTemplate.queryForObject("select * from users where id = ?", UserDbStorage::createUser, id);
+        } catch (EmptyResultDataAccessException e) {
             throw new DataNotFoundException(String.format("В таблице нет одной записи с id = %s", id));
         }
-        return users.get(0);
     }
 
     @Override
